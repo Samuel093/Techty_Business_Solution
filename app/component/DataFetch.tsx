@@ -12,7 +12,7 @@ const DataFetch = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // 👇  client avatars 
+  // 👇 client avatars
   const avatars = [
     "/images/client1.png",
     "/images/client2.png",
@@ -30,9 +30,13 @@ const DataFetch = () => {
       try {
         const result = await fetchPosts();
         setPosts(result.slice(0, 9)); // limit to 9 posts
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError(true);
-        setErrorMessage(err.message || "Something went wrong");
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong");
+        }
       } finally {
         setLoading(false);
       }
@@ -59,13 +63,13 @@ const DataFetch = () => {
   return (
     <section className="w-full font-sans py-16 px-4 sm:px-8 md:px-12">
       <motion.h1
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{once: true}}
-      className="text-3xl sm:text-4xl md:text-5xl font-bold text-center leading-snug">
-        Read what our{" "}
-        <span className="text-green-500">customers</span> <br />
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-3xl sm:text-4xl md:text-5xl font-bold text-center leading-snug"
+      >
+        Read what our <span className="text-green-500">customers</span> <br />
         are saying about us
       </motion.h1>
 
@@ -78,11 +82,9 @@ const DataFetch = () => {
               className="animate-pulse flex flex-col gap-4 p-6 rounded-2xl border border-gray-200 shadow-sm"
             >
               <div className="flex gap-1">
-                <div className="h-5 w-5 rounded bg-gray-300" />
-                <div className="h-5 w-5 rounded bg-gray-300" />
-                <div className="h-5 w-5 rounded bg-gray-300" />
-                <div className="h-5 w-5 rounded bg-gray-300" />
-                <div className="h-5 w-5 rounded bg-gray-300" />
+                {[...Array(5)].map((_, j) => (
+                  <div key={j} className="h-5 w-5 rounded bg-gray-300" />
+                ))}
               </div>
               <div className="h-6 w-2/3 bg-gray-300 rounded" />
               <div className="h-4 w-full bg-gray-200 rounded" />
@@ -104,12 +106,12 @@ const DataFetch = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{once: true}} 
-            
-        className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          viewport={{ once: true }}
+          className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {posts.map((post, index) => (
             <div
-              key={index}
+              key={post.id}
               className="flex flex-col gap-4 p-6 rounded-2xl border border-green-400 shadow-md hover:shadow-xl transition"
             >
               {/* Stars */}
@@ -127,7 +129,9 @@ const DataFetch = () => {
 
               {/* Post content */}
               <p className="font-semibold text-lg">{post.title}</p>
-              <p className="text-gray-600 text-sm italic">"{post.body}"</p>
+              <p className="text-gray-600 text-sm italic">
+                &quot;{post.body}&quot;
+              </p>
 
               {/* User Info */}
               <div className="flex items-center gap-4 mt-4">
@@ -152,4 +156,5 @@ const DataFetch = () => {
 };
 
 export default DataFetch;
+
 

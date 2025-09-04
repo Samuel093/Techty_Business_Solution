@@ -17,9 +17,13 @@ export default function BlogList() {
       try {
         const result = await fetchPosts();
         setPosts(result);
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError(true);
-        setErrorMessage(err.message || "Something went wrong while fetching posts.");
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong while fetching posts.");
+        }
       } finally {
         setLoading(false);
       }
@@ -47,25 +51,27 @@ export default function BlogList() {
     <section className="w-full py-16 px-4 sm:px-8 md:px-12 max-w-7xl mx-auto">
       {/* Section Header */}
       <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{once: true}}
-          className="text-center max-w-2xl mx-auto">
-
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-center max-w-2xl mx-auto"
+      >
         <h2 className="text-3xl md:text-4xl font-bold mb-4">Read All Articles</h2>
         <p className="text-gray-600">
-          We’re constantly pushing the boundaries of what’s possible and seeking new ways to improve our services.
+          We&rsquo;re constantly pushing the boundaries of what&rsquo;s possible and seeking new ways to improve our
+          services.
         </p>
       </motion.div>
 
       {/* Blog Grid */}
       <motion.div
-         initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
-        viewport={{once: true}}
-        className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        viewport={{ once: true }}
+        className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
         {loading
           ? Array.from({ length: 6 }).map((_, i) => (
               <div
@@ -84,11 +90,10 @@ export default function BlogList() {
                 </div>
               </div>
             ))
-          : posts.map((post, index) => (
-              <BlogCard key={post.id} post={post} index={index} />
-            ))}
+          : posts.map((post, index) => <BlogCard key={post.id} post={post} index={index} />)}
       </motion.div>
     </section>
   );
 }
+
 
