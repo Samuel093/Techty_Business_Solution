@@ -6,10 +6,10 @@ import dynamic from "next/dynamic";
 const Marquee = dynamic(() => import("react-fast-marquee"), { ssr: false });
 
 const logos = [
-  { src: "/images/logo1.png", alt: "Loop" },
-  { src: "/images/logo2.png", alt: "Logoipsum" },
-  { src: "/images/logo3.png", alt: "IPSUM" },
-  { src: "/images/logo4.png", alt: "BeeCo" },
+  { src: "/images/asana.png", alt: "asana" },
+  { src: "/images/webflow.png", alt: "webflow" },
+  { src: "/images/elastic.png", alt: "elastic" },
+  { src: "/images/databricks.png", alt: "databricks" },
 ];
 
 export default function LogoTicker() {
