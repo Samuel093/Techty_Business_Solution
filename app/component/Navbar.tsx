@@ -7,12 +7,12 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 export default function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   const menuItems = [
     { href: '/', label: 'Home' },
@@ -20,12 +20,13 @@ export default function Navbar() {
     { href: '/services', label: 'Services' },
     { href: '/blogs', label: 'Blogs' },
     { href: '/contact', label: 'Contact' },
-  ];
+  ]
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
       className="fixed w-full bg-[#F0F8FF] backdrop-blur-sm z-50 shadow-sm"
     >
       <div className="container max-w-7xl mx-auto px-4">
@@ -39,7 +40,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href
               return (
                 <Link
                   key={item.href}
@@ -55,7 +56,7 @@ export default function Navbar() {
                     `}
                   ></span>
                 </Link>
-              );
+              )
             })}
             {/* Request Demo Button */}
             <a
@@ -81,27 +82,37 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-4">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href;
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden py-4 space-y-2"
+          >
+            {menuItems.map((item, index) => {
+              const isActive = pathname === item.href
               return (
-                <Link
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  className={`block relative pb-1 font-medium transition-colors 
-                    ${isActive ? 'text-green-600' : 'text-gray-800 hover:text-green-600'}
-                  `}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {item.label}
-                  <span
-                    className={`absolute left-0 -bottom-0.5 h-[3px] bg-green-600 transition-all duration-300
-                      ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`
+                      block px-4 py-3 rounded-lg font-medium transition-all duration-300
+                      ${isActive 
+                        ? 'bg-green-100 text-green-700 scale-[1.02]' 
+                        : 'text-gray-800 hover:bg-gray-100 hover:scale-[1.02]'}
                     `}
-                  ></span>
-                </Link>
-              );
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              )
             })}
+
             {/* Request Demo Button (Mobile) */}
             <a
               href="#demo"
@@ -110,12 +121,13 @@ export default function Navbar() {
             >
               Request a Free Demo
             </a>
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.nav>
   )
 }
+
 
 
 
