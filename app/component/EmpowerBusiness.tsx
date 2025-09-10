@@ -67,7 +67,7 @@ export default function EmpowerBusiness() {
   return (
     <section
       aria-labelledby="empower-heading"
-      className="mx-auto max-w-7xl px-4 py-10 md:py-16 sm:px-6 lg:px-8"
+      className="mx-auto max-w-7xl px-4 py-10 md:py-18 sm:px-6 lg:px-8"
     >
       {/* Heading */}
       <motion.div
